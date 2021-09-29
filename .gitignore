@@ -4,4 +4,6 @@
 !/docker-compose-production.yml
 !/Dockerfile
 !/init-mongo.js
+!/nginx.conf
+!/init.bat
 !/.env-example
