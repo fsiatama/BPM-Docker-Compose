@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  bpm_database:
+    image: 'postgres'
+    container_name: postgres_container
+    environment:
+      - POSTGRES_USER=camunda
+      - POSTGRES_PASSWORD=camunda
+    volumes:
+      - ./bpm_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - code-network
+    restart: unless-stopped
+  engine-bpm:
+    container_name: engine-bpm
+    image: camunda/camunda-bpm-platform:latest
+    environment:
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://bpm_database:5432/camunda
+      - DB_USERNAME=camunda
+      - DB_PASSWORD=camunda
+      - WAIT_FOR=bpm_database:5432
+    links:
+      - bpm_database
+    ports:
+      - '8080:8080'
+    restart: always
+    depends_on:
+      - bpm_database
+    networks:
+      - code-network
+  external_task_api:
+    build:
+      context: ./royal-bpm-task-api
+      dockerfile: Dockerfile
+    image: external_task_api
+    container_name: external_task_api
+    restart: always
+    tty: true
+    ports:
+      - '3000:3000'
+    environment:
+      - CAMUNDA_ENGINE_URL=${CAMUNDA_ENGINE_URL}
+    depends_on:
+      - engine-bpm
+    # Only for development
+    #volumes:
+    #  - ./royal-bpm-task-api:/usr/src/app
+    #  - /usr/src/app/node_modules
+    #command: npm start
+    networks:
+      - code-network
+  bpm_web_build:
+    build:
+      context: ./bpm_web
+      dockerfile: Dockerfile
+    container_name: 'bpm_web_build'
+    volumes:
+      - ./bpm_web/dist:/usr/src/app/dist
+  bpm_web:
+    image: nginx
+    ports:
+      - 80:80
+    container_name: 'bpm_web'
+    restart: unless-stopped
+    networks:
+      - code-network
+    volumes:
+      - ./bpm_web/dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+networks:
+  code-network:
+    driver: bridge
+
+volumes:
+  bpm_data:
