@@ -27,6 +27,8 @@ services:
       - bpm_database
     ports:
       - '8080:8080'
+    expose:
+      - 8080
     restart: always
     depends_on:
       - bpm_database
@@ -44,6 +46,8 @@ services:
       - '3000:3000'
     environment:
       - CAMUNDA_ENGINE_URL=${CAMUNDA_ENGINE_URL}
+    expose:
+      - 3000
     depends_on:
       - engine-bpm
     # Only for development
