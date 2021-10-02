@@ -48,6 +48,9 @@ services:
       - CAMUNDA_ENGINE_URL=${CAMUNDA_ENGINE_URL}
     expose:
       - 3000
+    links:
+      - bpm_web_ui
+      - bpm_web
     depends_on:
       - engine-bpm
     # Only for development
