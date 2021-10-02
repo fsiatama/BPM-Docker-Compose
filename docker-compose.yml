@@ -34,7 +34,7 @@ services:
       - code-network
   external_task_api:
     build:
-      context: ./royal-bpm-task-api
+      context: ./bpm-task-api
       dockerfile: Dockerfile
     image: external_task_api
     container_name: external_task_api
@@ -48,18 +48,18 @@ services:
       - engine-bpm
     # Only for development
     #volumes:
-    #  - ./royal-bpm-task-api:/usr/src/app
+    #  - ./bpm-task-api:/usr/src/app
     #  - /usr/src/app/node_modules
     #command: npm start
     networks:
       - code-network
-  bpm_web_build:
+  bpm_web_ui:
     build:
-      context: ./bpm_web
+      context: ./bpm-react-ui
       dockerfile: Dockerfile
-    container_name: 'bpm_web_build'
+    container_name: 'bpm_web_ui'
     volumes:
-      - ./bpm_web/dist:/usr/src/app/dist
+      - ./bpm-react-ui/dist:/usr/src/app/dist
   bpm_web:
     image: nginx
     ports:
