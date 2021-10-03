@@ -40,12 +40,19 @@ services:
       dockerfile: Dockerfile
     image: external_task_api
     container_name: external_task_api
-    restart: always
+    restart: unless-stopped
     tty: true
     ports:
       - '3000:3000'
     environment:
-      - CAMUNDA_ENGINE_URL=${CAMUNDA_ENGINE_URL}
+      NODE_ENV: production
+      APP_ID: ${APP_ID}
+      PORT: ${PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
+      REQUEST_LIMIT: ${REQUEST_LIMIT}
+      SESSION_SECRET: ${SESSION_SECRET}
+      SWAGGER_API_SPEC: ${SWAGGER_API_SPEC}
+      CAMUNDA_ENGINE_URL: ${CAMUNDA_ENGINE_URL}
     expose:
       - 3000
     links:
