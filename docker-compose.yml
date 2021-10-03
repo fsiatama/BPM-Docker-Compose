@@ -2,15 +2,15 @@ version: '3'
 
 services:
   bpm_database:
-    image: 'postgres'
+    image: postgres:9.6
     container_name: bpm_database
     environment:
       - POSTGRES_USER=camunda
       - POSTGRES_PASSWORD=camunda
     volumes:
       - ./bpm_data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
+    networks:
+      - code-network
   engine-bpm:
     container_name: engine-bpm
     image: camunda/camunda-bpm-platform:latest
