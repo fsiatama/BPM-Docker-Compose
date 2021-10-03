@@ -31,8 +31,6 @@ services:
     expose:
       - 8080
     restart: unless-stopped
-    depends_on:
-      - bpm_database
     networks:
       - code-network
   external_task_api:
