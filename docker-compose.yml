@@ -13,8 +13,6 @@ services:
       - '5432:5432'
     expose:
       - 5432
-    networks:
-      - code-network
   engine-bpm:
     container_name: engine-bpm
     image: camunda/camunda-bpm-platform:latest
