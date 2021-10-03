@@ -11,6 +11,8 @@ services:
       - ./bpm_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    expose:
+      - 5432
     networks:
       - code-network
   engine-bpm:
@@ -25,7 +27,6 @@ services:
     links:
       - bpm_database
     ports:
-      - '5432:5432'
       - '8080:8080'
     expose:
       - 8080
