@@ -13,7 +13,6 @@ services:
       - '5432:5432'
     networks:
       - code-network
-    restart: unless-stopped
   engine-bpm:
     container_name: engine-bpm
     image: camunda/camunda-bpm-platform:latest
